@@ -10,6 +10,36 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(process.cwd(), ".env.local") });
 dotenv.config({ path: path.join(process.cwd(), ".env") });
 
+const isNonEmptyString = (value: unknown): value is string =>
+  typeof value === "string" && value.trim().length > 0;
+
+const parseBrevoListId = (raw: string | undefined) => {
+  if (!raw) return undefined;
+  const trimmed = raw.trim();
+  const direct = Number(trimmed);
+  if (Number.isFinite(direct) && direct > 0) return direct;
+
+  const matches = trimmed.match(/\d+/g);
+  if (!matches || matches.length === 0) return undefined;
+  const last = Number(matches[matches.length - 1]);
+  return Number.isFinite(last) && last > 0 ? last : undefined;
+};
+
+const rateLimit = (() => {
+  const windowMs = 60_000;
+  const maxPerWindow = 10;
+  const buckets = new Map<string, number[]>();
+
+  return (key: string) => {
+    const now = Date.now();
+    const hits = (buckets.get(key) ?? []).filter((t) => now - t < windowMs);
+    if (hits.length >= maxPerWindow) return false;
+    hits.push(now);
+    buckets.set(key, hits);
+    return true;
+  };
+})();
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
@@ -21,7 +51,16 @@ async function startServer() {
       email?: unknown;
       firstName?: unknown;
       lastName?: unknown;
+      company?: unknown;
     };
+
+    if (isNonEmptyString((req.body as any)?.company)) {
+      return res.json({ success: true, message: "SUBSCRIBED" });
+    }
+
+    if (!rateLimit(req.ip ?? "unknown")) {
+      return res.status(429).json({ error: "RATE_LIMITED" });
+    }
     
     if (typeof email !== "string" || email.trim().length === 0) {
       return res.status(400).json({ error: "Email is required" });
@@ -38,8 +77,8 @@ async function startServer() {
     }
 
     const listIdRaw = process.env.BREVO_LIST_ID;
-    const listId = listIdRaw ? Number(listIdRaw) : undefined;
-    if (listIdRaw && (!Number.isFinite(listId) || listId <= 0)) {
+    const listId = parseBrevoListId(listIdRaw);
+    if (listIdRaw && typeof listId !== "number") {
       return res.status(500).json({ error: "BREVO_LIST_ID is invalid" });
     }
 
