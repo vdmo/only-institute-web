@@ -21,10 +21,66 @@ export default function Footer() {
         <div>
           <h4 className="text-white uppercase tracking-[0.3em] mb-6 font-bold underline underline-offset-8 decoration-brand-accent">DOMAINS</h4>
           <ul className="space-y-4">
-            <li><a href="#" className="hover:text-white transition-colors uppercase tracking-widest">only.institute</a></li>
-            <li><a href="#" className="hover:text-white transition-colors uppercase tracking-widest">PIR.technology</a></li>
-            <li><a href="#" className="hover:text-white transition-colors uppercase tracking-widest">PrimeSwarm.ai</a></li>
-            <li><a href="#" className="hover:text-white transition-colors uppercase tracking-widest">HelixDB.io</a></li>
+            <li>
+              <a
+                href="https://only.institute"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-white transition-colors uppercase tracking-widest"
+              >
+                only.institute
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://pir.technology"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-white transition-colors uppercase tracking-widest"
+              >
+                PIR.technology
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://primeintegerrelations.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-white transition-colors uppercase tracking-widest"
+              >
+                PrimeIntegerRelations.com
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.primeswarmAGI.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-white transition-colors uppercase tracking-widest"
+              >
+                PrimeSwarmAGI.com
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.helix-db.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-white transition-colors uppercase tracking-widest"
+              >
+                helix-db.com
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://constraint-theory.superinstance.ai/"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-white transition-colors uppercase tracking-widest"
+              >
+                Constraint Theory
+              </a>
+            </li>
           </ul>
         </div>
         <div>

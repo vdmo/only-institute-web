@@ -88,6 +88,7 @@ export default async function handler(req: any, res: any) {
       return res.status(502).json({
         success: false,
         error: "BREVO_REQUEST_FAILED",
+        brevoStatus: brevoRes.status,
         detail,
       });
     }
@@ -103,4 +104,3 @@ export default async function handler(req: any, res: any) {
     return res.status(502).json({ success: false, error: "BREVO_UNREACHABLE", message });
   }
 }
-

@@ -4,9 +4,11 @@ import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
 
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 dotenv.config({ path: path.join(process.cwd(), ".env.local") });
+dotenv.config({ path: path.join(process.cwd(), ".env") });
 
 async function startServer() {
   const app = express();
@@ -81,6 +83,7 @@ async function startServer() {
         return res.status(502).json({
           success: false,
           error: "BREVO_REQUEST_FAILED",
+          brevoStatus: brevoRes.status,
           detail,
         });
       }

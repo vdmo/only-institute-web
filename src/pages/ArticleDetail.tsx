@@ -45,23 +45,54 @@ export default function ArticleDetail() {
   const article = ARTICLES[id as keyof typeof ARTICLES];
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubscribe = async (e: FormEvent) => {
     e.preventDefault();
     if (email) {
+      setIsSubmitting(true);
+      setError(null);
       try {
         const response = await fetch('/api/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
         });
-        if (response.ok) {
+
+        const data = (await response.json().catch(() => null)) as
+          | {
+              success?: boolean;
+              error?: string;
+              message?: string;
+              brevoStatus?: number;
+              detail?: unknown;
+            }
+          | null;
+
+        const detailMessage = (() => {
+          const detail = data?.detail;
+          if (typeof detail === 'string') return detail;
+          if (detail && typeof detail === 'object' && 'message' in detail) {
+            const msg = (detail as { message?: unknown }).message;
+            return typeof msg === 'string' ? msg : null;
+          }
+          return null;
+        })();
+
+        if (response.ok && data?.success !== false) {
           setSubmitted(true);
           setTimeout(() => setSubmitted(false), 3000);
           setEmail('');
+        } else {
+          const statusTag = typeof data?.brevoStatus === 'number' ? ` (Brevo ${data.brevoStatus})` : '';
+          setError((detailMessage ?? data?.error ?? 'Subscription failed') + statusTag);
         }
       } catch (err) {
-        console.error("Subscription failed:", err);
+        const message = err instanceof Error ? err.message : 'Subscription failed';
+        setError(message);
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
@@ -143,12 +174,22 @@ export default function ArticleDetail() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={isSubmitting}
               className="flex-1 bg-black border border-white/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest focus:border-brand-accent outline-none" 
             />
-            <button className="px-6 py-2 bg-brand-accent text-black font-mono text-[10px] font-bold uppercase tracking-widest">
-              {submitted ? "SENT" : "Subscribe"}
+            <button
+              disabled={isSubmitting}
+              className="px-6 py-2 bg-brand-accent text-black font-mono text-[10px] font-bold uppercase tracking-widest disabled:opacity-70"
+            >
+              {submitted ? "SENT" : isSubmitting ? "SENDING..." : "Subscribe"}
             </button>
           </form>
+
+          {error ? (
+            <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-red-400">
+              {error}
+            </p>
+          ) : null}
         </div>
       </footer>
     </motion.div>

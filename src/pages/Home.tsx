@@ -10,7 +10,9 @@ import {
   Mail,
   ChevronDown
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useState, type FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PILLARS = [
   {
@@ -64,6 +66,7 @@ const PILLARS = [
 ];
 
 export default function Home() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -81,15 +84,32 @@ export default function Home() {
           body: JSON.stringify({ email }),
         });
         const data = (await response.json().catch(() => null)) as
-          | { success?: boolean; error?: string; message?: string }
+          | {
+              success?: boolean;
+              error?: string;
+              message?: string;
+              brevoStatus?: number;
+              detail?: unknown;
+            }
           | null;
+
+        const detailMessage = (() => {
+          const detail = data?.detail;
+          if (typeof detail === 'string') return detail;
+          if (detail && typeof detail === 'object' && 'message' in detail) {
+            const msg = (detail as { message?: unknown }).message;
+            return typeof msg === 'string' ? msg : null;
+          }
+          return null;
+        })();
 
         if (response.ok && data?.success !== false) {
           setSubmitted(true);
           setTimeout(() => setSubmitted(false), 3000);
           setEmail('');
         } else {
-          setError(data?.error ?? 'Subscription failed');
+          const statusTag = typeof data?.brevoStatus === 'number' ? ` (Brevo ${data.brevoStatus})` : '';
+          setError((detailMessage ?? data?.error ?? 'Subscription failed') + statusTag);
         }
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Subscription failed';
@@ -131,6 +151,7 @@ export default function Home() {
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => navigate('/request-access')}
               className="px-8 py-4 bg-white text-black font-display font-bold uppercase tracking-widest flex items-center gap-3 hover:bg-brand-accent transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-brand-accent/20"
             >
               Request Access <ArrowRight size={20} />
@@ -210,9 +231,18 @@ export default function Home() {
                 </p>
                 
                 <div className="mt-12 pt-8 border-t border-white/5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-brand-secondary hover:text-white transition-colors">
-                    Technical Spec <ArrowRight size={12} />
-                  </button>
+                  {pillar.id === 'memory' ? (
+                    <Link
+                      to="/whitepaper"
+                      className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-brand-secondary hover:text-white transition-colors"
+                    >
+                      Read Whitepaper <ArrowRight size={12} />
+                    </Link>
+                  ) : (
+                    <button className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-brand-secondary hover:text-white transition-colors">
+                      Technical Spec <ArrowRight size={12} />
+                    </button>
+                  )}
                 </div>
               </motion.div>
             ))}

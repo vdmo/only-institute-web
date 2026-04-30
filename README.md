@@ -25,4 +25,5 @@ View your app in AI Studio: https://ai.studio/apps/2bfdea79-516c-4488-beb8-c24d7
 2. Set environment variables in Vercel Project Settings:
    - `BREVO_API_KEY`
    - `BREVO_LIST_ID` (optional)
-3. Deploy
+3. If Brevo “Authorized IPs” is enabled, disable it for Vercel (serverless IPs change) or use a backend with a static egress IP.
+4. Deploy
