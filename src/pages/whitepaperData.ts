@@ -8,7 +8,7 @@ export const WHITEPAPER_EXTERNAL_REFERENCES = [
   {
     label: 'HelixDB',
     href: 'https://www.helix-db.com/',
-    description: 'Native Graph-Vector database primitives for structure-first memory.',
+    description: 'Ultra-low-latency graph-vector storage primitives used as the engine beneath onlyDB.',
   },
   {
     label: 'PrimeSwarmAGI.com',
@@ -38,7 +38,7 @@ export const WHITEPAPER_SECTIONS: WhitepaperSection[] = [
       },
       {
         type: 'p',
-        text: 'This whitepaper proposes and documents a memory architecture implemented in the ONLY‑INSTITUTE stack: Graph‑Vector Memory backed by HelixDB‑style primitives (typed graph + vector index), governed by coherence gating (PIR) and constraint/proof enforcement (Gate + proof tokens). The central thesis is: memory is not text storage; it is a validated, traversable web of relationships. Vectors accelerate retrieval, but the graph is the source of truth. Writes are treated as privileged actions and require deterministic admissibility checks before they can enter “pure” long‑term memory.',
+        text: 'This whitepaper proposes and documents a memory architecture implemented in the ONLY‑INSTITUTE stack: Graph‑Vector Memory backed by onlyDB—our epistemic, causal database layer built on HelixDB-style storage primitives (typed graph + vector index). It is governed by coherence gating (PIR) and constraint/proof enforcement (Gate + proof tokens). The central thesis is: memory is not text storage; it is a validated, traversable web of relationships. Vectors accelerate retrieval, but the graph is the source of truth. Writes are treated as privileged actions and require deterministic admissibility checks before they can enter “pure” long‑term memory.',
       },
     ],
   },
@@ -98,6 +98,20 @@ export const WHITEPAPER_SECTIONS: WhitepaperSection[] = [
       {
         type: 'p',
         text: '3.2 Mathematical pillars (memory‑relevant): Memory (Graph‑Vectors), Reality (PIR), Logic (Constraints), Action (Proof tokens), Causality (Do‑Calculus), Translation (Category Theory).',
+      },
+    ],
+  },
+  {
+    id: 'onlydb',
+    title: 'From Storage to Epistemology: The Architecture of onlyDB',
+    body: [
+      {
+        type: 'p',
+        text: 'Standard databases store arbitrary nodes, edges, and embeddings, but they do not understand epistemology, causality, or admissibility. onlyDB is different: it is an epistemic, causal database layer where constraints, provenance, and Do‑Calculus are first‑class citizens in the query and write path.',
+      },
+      {
+        type: 'p',
+        text: 'Architecturally, onlyDB follows an “engine and wrapper” pattern. HelixDB remains the ultra-low-latency graph-vector storage engine, while onlyDB is the proprietary cognitive layer that validates writes, blocks constraint violations, applies coherence gating, and translates OnlyQL requests into storage operations.',
       },
     ],
   },

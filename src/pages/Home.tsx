@@ -18,8 +18,8 @@ const PILLARS = [
   {
     id: 'memory',
     title: 'Memory',
-    subtitle: 'HelixDB Graph-Vectors',
-    description: 'AI suffers from amnesia and context loss, relying on flat vector search. We store knowledge as a structural, traversable web of relationships, giving the AI perfect, long-term contextual memory.',
+    subtitle: 'onlyDB Graph-Vectors',
+    description: 'AI suffers from amnesia and context loss, relying on flat vector search. onlyDB is our cognitive database layer built on HelixDB-style graph-vector storage, enforcing structure, provenance, and constraints as first-class citizens.',
     icon: Database,
     accent: '#00ffaa'
   },
@@ -186,7 +186,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
             <div className="max-w-2xl">
               <h2 className="font-display text-4xl md:text-6xl font-bold tracking-tighter mb-6 uppercase">
-                The Six Pillars of the <br/><span className="text-brand-accent">Cognitive OS</span>
+                The Six Pillars of cognitive OS<br/><span className="text-brand-accent">ONLY OS</span>
               </h2>
               <p className="text-neutral-500 font-mono text-sm leading-relaxed uppercase tracking-widest">
                 Mission-critical intelligence requires absolute safety routing through six irrefutable mathematical gates.

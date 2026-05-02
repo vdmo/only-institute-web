@@ -58,7 +58,7 @@ export default function Whitepaper() {
           Graph‑Vector Memory for Deterministic Agent Systems
         </h1>
         <p className="mt-6 max-w-4xl text-neutral-400 font-mono text-xs uppercase tracking-widest leading-relaxed">
-          HelixDB + ONLY‑INSTITUTE — Structure-first memory, coherence gating, and proof-enforced writes.
+          onlyDB (on HelixDB) + ONLY‑INSTITUTE — Structure-first memory, coherence gating, and proof-enforced writes.
         </p>
       </header>
 
